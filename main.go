@@ -9,30 +9,35 @@ import (
 	"time"
 )
 
-func main() {
-	orderType := "Delivery"
-	cityStateZip := "Atlanta, GA, 30305"
-	streetAddress := "3800 Northside Dr NW"
+var apiURL = "https://order.dominos.com/power"
+var orderTypes = map[string]string{"delivery": "delivery", "carryout": "carryout"}
 
-	//	URL := "https://order.dominos.com/power/store-locator?type=" + orderType + "&c=" + cityStateZip + "&s=" + streetAddress
+func getStoreNearAddress(orderType, cityRegionOrPostalCode, streetAddress string) string {
+	p := url.Values{"type": {orderType}, "c": {cityRegionOrPostalCode}, "s": {streetAddress}}
+	URL := apiURL + "/store-locator?" + p.Encode()
+	return request(URL)
+}
 
-	URL := "https://order.dominos.com/power/store-locator?"
-	p := url.Values{"type": {orderType}, "c": {cityStateZip}, "s": {streetAddress}}
-	URL = URL + p.Encode()
+func getStoreInfo(storeID string) string {
+	URL := apiURL + "/store/" + storeID + "/profile"
+	return request(URL)
+}
+
+func getStoreMenu(storeID string) string {
+	URL := apiURL + "/store/" + storeID + "/menu?lang=en&structured=true"
+	return request(URL)
+}
+
+func request(url string) string {
 	dominosClient := http.Client{
 		Timeout: time.Second * 2,
 	}
-	req, err := http.NewRequest(http.MethodGet, URL, nil)
+	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	req.Header.Set("Accept", "application/json, text/javascript, */*; q=0.01")
-	req.Header.Set("Accept-Language", "en-US,en;q-0.5")
-	req.Header.Set("Market", "UNITED_STATES")
-	req.Header.Set("DPZ-Language", "en")
-	req.Header.Set("DPZ-Market", "UNITED_STATES")
-	req.Header.Set("Connection", "keep-alive")
 
 	res, getErr := dominosClient.Do(req)
 	if getErr != nil {
@@ -43,7 +48,23 @@ func main() {
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
-	fmt.Println(string(body))
+	return (string(body))
+}
+
+func main() {
+	orderType := orderTypes["delivery"]
+	cityRegionOrPostalCode := "Atlanta, GA, 30305"
+	streetAddress := "3800 Northside Dr NW"
+	res := getStoreNearAddress(orderType, cityRegionOrPostalCode, streetAddress)
+	fmt.Println(res)
+	fmt.Println("next response ==============================")
+	storeID := "6342"
+	res = getStoreInfo(storeID)
+	fmt.Println(res)
+	fmt.Println("next response ==============================")
+	res = getStoreMenu(storeID)
+	fmt.Println(res)
+
 }
 
 // curl for carryout
