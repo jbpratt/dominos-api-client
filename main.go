@@ -52,17 +52,17 @@ func request(url string) string {
 }
 
 func main() {
-	orderType := orderTypes["delivery"]
-	cityRegionOrPostalCode := "Atlanta, GA, 30305"
-	streetAddress := "3800 Northside Dr NW"
-	res := getStoreNearAddress(orderType, cityRegionOrPostalCode, streetAddress)
-	fmt.Println(res)
-	fmt.Println("next response ==============================")
+	//	orderType := orderTypes["delivery"]
+	//	cityRegionOrPostalCode := "Atlanta, GA, 30305"
+	//	streetAddress := "3800 Northside Dr NW"
+	//	res := getStoreNearAddress(orderType, cityRegionOrPostalCode, streetAddress)
+	//	fmt.Println(res)
+	//	fmt.Println("next response ==============================")
 	storeID := "6342"
-	res = getStoreInfo(storeID)
-	fmt.Println(res)
-	fmt.Println("next response ==============================")
-	res = getStoreMenu(storeID)
+	//	res = getStoreInfo(storeID)
+	//	fmt.Println(res)
+	//	fmt.Println("next response ==============================")
+	res := getStoreMenu(storeID)
 	fmt.Println(res)
 
 }
@@ -72,3 +72,5 @@ func main() {
 
 // curl for delivery
 // curl 'https://order.dominos.com/power/store-locator?type=Delivery&c=ATLANTA%2C%20GA%2030305-1033&s=3800%20NORTHSIDE%20DR%20NW' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0' -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Referer: https://order.dominos.com/en/assets/build/xdomain/proxy.html' -H 'Market: UNITED_STATES' -H 'DPZ-Language: en' -H 'DPZ-Market: UNITED_STATES' -H 'X-DPZ-D: 30cfe3d96472371dd857c49b8e7b9e64212b8bd95ef6c630e41efd6ddc8b6ef5' -H 'Connection: keep-alive' -H 'Cookie: check=true; mbox=session#b1b8d69f22774309a0ad651ed69c607d#1550286006' -H 'DNT: 1'
+
+// curl 'https://order.dominos.com/power/store/5840/menu?lang=en&structured=true' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0' -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Referer: https://order.dominos.com/en/assets/build/xdomain/proxy.html' -H 'Market: UNITED_STATES' -H 'DPZ-Language: en' -H 'DPZ-Market: UNITED_STATES' -H 'X-DPZ-D: 3c6bced531cfe3d9647313f6db57caa07e11ebfa7eaa72f4f8142cf128679a31' -H 'Pragma: no-cache' -H 'Connection: keep-alive' -H 'Cookie: check=true; mbox=session#8d00bb0ecb2544d9b64be0d26db1a06e#1550329931' -H 'DNT: 1'
