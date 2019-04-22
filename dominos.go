@@ -1,4 +1,4 @@
-package main
+package dominos
 
 import (
 	"bytes"
@@ -10,32 +10,29 @@ import (
 	"time"
 )
 
-var apiURL = "https://order.dominos.com/power"
-var orderTypes = map[string]string{"delivery": "delivery", "carryout": "carryout"}
-
 func getStoreNearAddress(orderType, cityRegionOrPostalCode, streetAddress string) string {
 	p := url.Values{"type": {orderType}, "c": {cityRegionOrPostalCode}, "s": {streetAddress}}
-	URL := apiURL + "/store-locator?" + p.Encode()
+	URL := APIURL + "/store-locator?" + p.Encode()
 	return request(URL)
 }
 
 func getStoreInfo(storeID string) string {
-	URL := apiURL + "/store/" + storeID + "/profile"
+	URL := APIURL + "/store/" + storeID + "/profile"
 	return request(URL)
 }
 
 func getStoreMenu(storeID string) string {
-	URL := apiURL + "/store/" + storeID + "/menu?lang=en&structured=true"
+	URL := APIURL + "/store/" + storeID + "/menu?lang=en&structured=true"
 	return request(URL)
 }
 
 func getStoreCoupon(couponID, storeID string) string {
-	URL := apiURL + "/store/" + storeID + "/coupon/" + couponID + "?lang=en"
+	URL := APIURL + "/store/" + storeID + "/coupon/" + couponID + "?lang=en"
 	return request(URL)
 }
 
 func validateOrder(order []byte) string {
-	URL := apiURL + "validate-order/"
+	URL := APIURL + "validate-order/"
 	return postRequest(URL, order)
 }
 
